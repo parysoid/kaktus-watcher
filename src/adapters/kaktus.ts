@@ -43,7 +43,12 @@ export async function checkDobijecka(
       .join('. ')
       .slice(0, 400);
 
-    return { found: true, snippet };
+    const cleanedText = text
+        .replace(/(\d{1,2})\.\s{2,}(\d{4})/g, '$1. 10. $2') // hacky fix if month 10 got lost
+        .replace(/\s+/g, ' ')
+        .trim();
+
+    return { found: true, snippet: cleanedText };
   }
 
   return { found: false };
