@@ -6,6 +6,7 @@ and sends notifications to Discord via webhook.
 ---
 
 ## 🧱 Stack
+
 - **Node.js 23+**
 - **TypeScript**
 - **Cheerio** for HTML parsing
@@ -23,6 +24,7 @@ npm install
 ```
 
 Create a `.env` file:
+
 ```bash
 DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
 FORCE_TEST=false
@@ -33,19 +35,25 @@ KAKTUS_HREF_TARGET_URL=https://www.mujkaktus.cz/dobit-kredit
 ---
 
 ## 🚀 Run
+
 Start the watcher:
+
 ```bash
 npm run dev
 ```
+
 Runs every 10 minutes and checks for new “Dobíječka” events.
 
 ---
 
 ## 🧪 Test Mode
+
 If you want to simulate an event without waiting:
+
 ```bash
 FORCE_TEST=true
 ```
+
 You’ll immediately get a test embed like this:
 
 > ⚡ **Dobíječka detected!**  
@@ -55,6 +63,7 @@ You’ll immediately get a test embed like this:
 ---
 
 ## 🧩 Architecture
+
 ```
 src/
 ├── adapters/      → Web scrapers (Kaktus)
@@ -67,22 +76,25 @@ src/
 ---
 
 ## 💡 Environment Variables
-| Variable | Description |
-|-----------|-------------|
-| `DISCORD_WEBHOOK_URL` | Discord webhook endpoint |
-| `FORCE_TEST` | Simulated mode (true/false) |
-| `KAKTUS_URL` | Target page to scrape |
-| `KAKTUS_HREF_TARGET_URL` | “Recharge now” link |
+
+| Variable                 | Description                 |
+| ------------------------ | --------------------------- |
+| `DISCORD_WEBHOOK_URL`    | Discord webhook endpoint    |
+| `FORCE_TEST`             | Simulated mode (true/false) |
+| `KAKTUS_URL`             | Target page to scrape       |
+| `KAKTUS_HREF_TARGET_URL` | “Recharge now” link         |
 
 ---
 
 ## ⚙️ Deploy to Raspberry Pi
+
 ```bash
 npm run build
 npm start
 ```
 
 Or as systemd service:
+
 ```bash
 sudo systemctl enable kaktus-watcher
 sudo systemctl start kaktus-watcher
@@ -91,8 +103,9 @@ sudo systemctl start kaktus-watcher
 ---
 
 ## 📜 License
+
 MIT © 2025 [parysoid](https://github.com/parysoid)
 
 ---
 
-🪄 *“Stay charged, stay connected — even the cacti need power sometimes.”*
+🪄 _“Stay charged, stay connected — even the cacti need power sometimes.”_

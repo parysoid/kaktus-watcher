@@ -1,3 +1,3 @@
 export interface StateFile {
-    lastFound: string | null;
+  lastFound: string | null;
 }
