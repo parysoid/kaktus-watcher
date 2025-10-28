@@ -9,11 +9,11 @@ dotenv.config();
 
 const STATE_FILE = path.resolve('state.json');
 const KAKTUS_URL = process.env.KAKTUS_URL
-  ? process.env.KAKTUS_URL
-  : 'https://www.mujkaktus.cz/chces-pridat';
+    ? process.env.KAKTUS_URL
+    : 'https://www.mujkaktus.cz/chces-pridat';
 const KAKTUS_HREF_TARGET_URL = process.env.KAKTUS_HREF_TARGET_URL
-  ? process.env.KAKTUS_HREF_TARGET_URL
-  : 'https://www.mujkaktus.cz/dobit-kredit';
+    ? process.env.KAKTUS_HREF_TARGET_URL
+    : 'https://www.mujkaktus.cz/dobit-kredit';
 const FORCE_TEST = process.env.FORCE_TEST === 'true';
 
 async function loadState(): Promise<StateFile> {
@@ -34,6 +34,7 @@ async function runCheck() {
   console.log('🔍 FORCE_TEST =', FORCE_TEST);
   console.log('🔍 KAKTUS_URL =', KAKTUS_URL);
   console.log('🔍 KAKTUS_HREF_TARGET_URL =', KAKTUS_HREF_TARGET_URL);
+
   const result = await checkDobijecka(FORCE_TEST);
   const state = await loadState();
 
@@ -41,10 +42,15 @@ async function runCheck() {
     console.log('⚡ Dobíječka detected!');
 
     const dateMatch = result.snippet?.match(
-      /\d{1,2}\.\s?\d{1,2}\.\s?\d{4}(?:\s?\d{1,2}:\d{2}\s?-\s?\d{1,2}:\d{2})?/
+        /\d{1,2}\.?\s?\d{1,2}\.?\s?\d{2,4}(?:\s?(?:od|v)?\s?\d{1,2}[:.]\d{2}\s?(?:-|do)?\s?\d{1,2}[:.]\d{2})?/i
     );
 
-    const dateRange = dateMatch ? dateMatch[0].replace(/\s+/g, ' ').trim() : 'Active now';
+    console.log('🧩 Date match result:', dateMatch ? dateMatch[0] : 'None found');
+    console.log('📜 Snippet preview:', result.snippet?.slice(0, 200));
+
+    const dateRange = dateMatch
+        ? dateMatch[0].replace(/\s+/g, ' ').trim()
+        : 'Active now';
 
     await sendDobijeckaEmbed({
       title: '⚡ Dobíječka detected!',
