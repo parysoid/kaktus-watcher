@@ -1,0 +1,15 @@
+# Node / build
+node_modules/
+dist/
+
+# Env files
+.env
+!.env.example  # <- tento řádek říká: "povolit .env.example"
+
+# Misc
+data/
+.DS_Store
+.idea
+/src/generated/prisma
+reports/
+.eslint-resolved.json
