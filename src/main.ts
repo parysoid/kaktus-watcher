@@ -4,6 +4,7 @@ import { sendDobijeckaEmbed } from './services/notifier.js';
 import fs from 'fs/promises';
 import path from 'path';
 import { StateFile } from './types.js';
+import crypto from "crypto";
 
 dotenv.config();
 
@@ -23,12 +24,16 @@ async function loadState(): Promise<StateFile> {
     const raw = await fs.readFile(STATE_FILE, 'utf8');
     return JSON.parse(raw);
   } catch {
-    return { lastFound: null };
+    return { lastHash: null };
   }
 }
 
 async function saveState(state: StateFile): Promise<void> {
   await fs.writeFile(STATE_FILE, JSON.stringify(state, null, 2), 'utf8');
+}
+
+function hashString(str: string) {
+  return crypto.createHash("sha256").update(str).digest("hex");
 }
 
 async function runCheck() {
@@ -41,7 +46,8 @@ async function runCheck() {
   const result = await checkDobijecka(FORCE_TEST);
   const state = await loadState();
 
-  if (result.found && result.snippet !== state.lastFound) {
+  const newHash = hashString(result.snippet || "");
+  if (result.found && newHash !== state.lastHash) {
     console.log('⚡ Dobíječka detected!');
 
     const dateMatch = result.snippet?.match(
@@ -60,7 +66,7 @@ async function runCheck() {
       color: 0x57f287,
     });
 
-    await saveState({ lastFound: result.snippet || 'Dobíječka' });
+    await saveState({ lastHash: newHash });
   } else {
     console.log('🕐 No Dobíječka found yet.');
   }
