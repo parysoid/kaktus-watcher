@@ -26,17 +26,23 @@ export async function checkDobijecka(forceTest = false): Promise<{ found: boolea
 
     const text = $('body').text().replace(/\s+/g, ' ').trim().toLowerCase();
 
-    const lines = text.split(/[.!?]/);
-    const match = lines.find((line) =>
+    const sentences = text.split(/[.!?]/);
+    const keywordIndex = sentences.findIndex((line) =>
         KEYWORDS.some((keyword) => line.includes(keyword))
     );
 
-    if (match) {
-        const snippet = match
+    if (keywordIndex !== -1) {
+        const contextSentences = sentences.slice(
+            Math.max(0, keywordIndex - 2),
+            Math.min(sentences.length, keywordIndex + 3)
+        );
+
+        const snippet = contextSentences
+            .join('. ')
             .replace(/\s+/g, ' ')
-            .replace(/(\d{1,2})\.\s{2,}(\d{4})/g, '$1. 10. $2') // keep month fix
+            .replace(/(\d{1,2})\.\s{2,}(\d{4})/g, '$1. 10. $2')
             .trim()
-            .slice(0, 300);
+            .slice(0, 400);
 
         return {found: true, snippet};
     }
